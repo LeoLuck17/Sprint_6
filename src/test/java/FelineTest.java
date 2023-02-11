@@ -1,11 +1,18 @@
 import com.example.Animal;
 import com.example.Feline;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 
+@RunWith(MockitoJUnitRunner.class)
 public class FelineTest {
-    Feline feline = new Feline();
+    @Spy
+    Feline feline;
     @Test
     public void eatMeatFeline() throws Exception {
         Animal animal = new Animal();
@@ -27,9 +34,8 @@ public class FelineTest {
     }
     @Test
     public void getKittensOutputCount(){
-        int expectedCountKittens = 1;
         int actualCountKittens = feline.getKittens();
-        assertEquals(expectedCountKittens, actualCountKittens);
+        Mockito.verify(feline, Mockito.times(1)).getKittens(1);
         // я не понимаю убрать зависимость getKittens() от getKittens(int),
         // это значение находиться в Feline - мокнуть его я не могу, так как проверяю этот класс
         // не понимаю как мне ТУТ подставить в getKittens(int) значение, которое будет принимать getKittens() в @Test

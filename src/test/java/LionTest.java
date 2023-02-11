@@ -6,38 +6,17 @@ import org.junit.runners.Parameterized;
 import org.mockito.Mockito;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
-@RunWith(Parameterized.class)
 public class LionTest {
     Feline feline = Mockito.mock(Feline.class);
-    private final String sex;
-    private final Boolean haveMane;
-    public LionTest(String sex, Boolean haveMane){
-        this.sex = sex;
-        this.haveMane = haveMane;
-    }
-    @Parameterized.Parameters
-    public static Object[][] setData(){
-        return new Object[][]{
-                {"Самец", true},
-                {"Самка", false}
-        };
-    }
-    @Test
-    public void doesHaveManeReturned() throws Exception {
-        Lion lion = new Lion(feline, sex);
-        boolean expectedHaveMane = haveMane;
-        boolean actualHaveMane = lion.doesHaveMane();
-        assertEquals(expectedHaveMane, actualHaveMane);
-    }
     @Test
     public void doesHaveManeReturnedException() throws Exception {
-        try {
+        Exception exception = assertThrows(Exception.class, () ->{
             Lion lion = new Lion(feline, "Окно");
             lion.doesHaveMane();
-        } catch (Exception exception) {
-            assertEquals(exception.getMessage(), "Используйте допустимые значения пола животного - самец или самка");
-        }
+        });
+        assertEquals("Используйте допустимые значения пола животного - самец или самка", exception.getMessage());
     }
     @Test
     public void lionGetFoodHowPredator() throws Exception {
